@@ -3,7 +3,7 @@ load File.dirname(__FILE__) + '/../test_helper.rb'
 require 'net/http'
 require 'net/https'
 
-describe "Parser XML" do
+describe "Parse XML" do
   include TestHelper
 
   it "Parse XML with REXML" do

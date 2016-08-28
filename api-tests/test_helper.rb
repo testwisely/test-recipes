@@ -24,7 +24,6 @@ $BASE_URL = "file://#{File.join(File.dirname(__FILE__), 'site', 'index.html')}"
 # defined here.
 module TestHelper
 
-  include RWebSpecUtils
   if defined?(TestWiseRuntimeSupport)  # TestWise 5
     include TestWiseRuntimeSupport 
   else

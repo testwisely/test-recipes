@@ -10,7 +10,14 @@ require 'ci/reporter/rake/rspec' # use this if you're using RSpec
 
 $test_dir =  File.expand_path(File.dirname(__FILE__) ) # change to absolute path
 
+
 task :default => ["go"]
+
+# For BuildWise CI
+BUILDWISE_URL = ENV["BUILDWISE_MASTER"] || "http://buildwise.macmini"
+BUILDWISE_QUICK_PROJECT_ID = "api-test-recipes" 
+import File.join(File.dirname(__FILE__), "buildwise.rake")
+
 
 # List tests you want to exclude
 #
@@ -75,4 +82,26 @@ RSpec::Core::RakeTask.new("test:all") do |t|
   all_specs = Dir.glob("spec/*_spec.rb")
   specs_to_be_executed = all_specs - excluded_spec_files
   t.pattern = FileList[specs_to_be_executed]
+end
+
+
+desc "run all tests from BuildWise"
+task "ci:test:all" => ["ci:setup:rspec"] do
+  build_id = buildwise_start_build(:project_name => BUILDWISE_QUICK_PROJECT_ID,
+  :working_dir => File.expand_path(File.dirname(__FILE__)),
+  :ui_test_dir => ["."],
+  :excluded => excluded_spec_files
+  )
+  puts "[Rake] new build id =>|#{build_id}|"
+  begin
+    # puts "[Rake] Invoke"
+    FileUtils.rm_rf("spec/reports") if File.exists?("spec/reports")
+    Rake::Task["test:all"].invoke
+    # puts "[Rake] Invoke Finish"
+  ensure
+    puts "Finished: Notify build status"
+    sleep 2 # wait a couple of seconds to finish writing last test results xml file out
+    puts "[Rake] finish the build"
+    buildwise_finish_build(build_id)
+  end
 end
