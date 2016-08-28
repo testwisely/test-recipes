@@ -15,7 +15,7 @@ task :default => ["go"]
 
 # For BuildWise CI
 BUILDWISE_URL = ENV["BUILDWISE_MASTER"] || "http://buildwise.macmini"
-BUILDWISE_QUICK_PROJECT_ID = "api-test-recipes" 
+BUILDWISE_QUICK_PROJECT_ID = "api-testing-recipes" 
 import File.join(File.dirname(__FILE__), "buildwise.rake")
 
 
@@ -79,7 +79,7 @@ end
 
 desc "Run all RSpec tests in the current folder"
 RSpec::Core::RakeTask.new("test:all") do |t|
-  all_specs = Dir.glob("spec/*_spec.rb")
+  all_specs = Dir.glob("#{$test_dir}/spec/*_spec.rb")
   specs_to_be_executed = all_specs - excluded_spec_files
   t.pattern = FileList[specs_to_be_executed]
 end
@@ -89,7 +89,6 @@ desc "run all tests from BuildWise"
 task "ci:test:all" => ["ci:setup:rspec"] do
   build_id = buildwise_start_build(:project_name => BUILDWISE_QUICK_PROJECT_ID,
   :working_dir => File.expand_path(File.dirname(__FILE__)),
-  :ui_test_dir => ["."],
   :excluded => excluded_spec_files
   )
   puts "[Rake] new build id =>|#{build_id}|"
