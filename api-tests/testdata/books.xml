@@ -1,0 +1,22 @@
+<books>
+  <category name="Test Automation">
+    <book isbn="1505882893">
+      <title>Practical Web Test Automation</title>    
+      <authors>Zhimin Zhan</authors>    
+    </book>  
+    <book isbn="1505885329">
+      <title>Selenium WebDriver Recipes in Ruby</title>    
+      <authors>Zhimin Zhan</authors>    
+    </book>      
+  </category>
+  <category name="Programming">
+    <book isbn="1505882885">
+      <title>Learn Ruby Programming by Examples</title>    
+      <authors>Zhimin Zhan, Courtney Zhan</authors>    
+    </book>  
+    <book isbn="">
+      <title>Learn Swift Programming by Examples</title>    
+      <authors>Zhimin Zhan</authors>    
+    </book>      
+  </category>
+</books>

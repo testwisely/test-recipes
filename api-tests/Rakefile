@@ -1,0 +1,78 @@
+# You need Ruby (Rake, RWebSpec, ci_reporter gems installed)
+#   Simplest way on Windows is to install RubyShell (http://testwisely.com/downloads)
+
+require 'rubygems'
+gem 'rspec'
+require 'rspec/core/rake_task'
+
+gem 'ci_reporter'
+require 'ci/reporter/rake/rspec' # use this if you're using RSpec
+
+$test_dir =  File.expand_path(File.dirname(__FILE__) ) # change to absolute path
+
+task :default => ["go"]
+
+# List tests you want to exclude
+#
+def excluded_test_files
+  [ 
+    "#{$test_dir}/spec/ignore_spec.rb"
+  ]
+end
+
+desc "run all webservices test in this folder"
+RSpec::Core::RakeTask.new("wstest") do |t|
+  test_files = Dir.glob("#{$test_dir}/spec/*soap*_spec.rb") + Dir.glob("#{$test_dir}/spec/*rest*_spec.rb")
+  t.pattern = FileList[test_files]
+  t.rspec_opts = ""    # to enable warning: "-w"
+end
+
+desc "run tests with exclusions"
+RSpec::Core::RakeTask.new("wstest:selected") do |t|
+  test_files = Dir.glob("#{$test_dir}/spec/*_spec.rb") - excluded_test_files
+  t.pattern = FileList[test_files]
+  t.rspec_opts = "" # to enable warning: "-w"
+end
+
+
+desc "run test with junit report output"
+task "wstest:report" => ["ci:setup:rspec"] do
+  Rake::Task["wstest"].invoke
+end
+
+
+require 'rake/testtask'
+
+Rake::TestTask.new("wstest_minitest") do |t|
+  t.test_files = FileList["#{$test_dir}/minitest/soap*.rb"]
+  t.verbose = true
+end
+
+
+
+
+## RSpec
+
+desc "selected key tests"
+RSpec::Core::RakeTask.new("test:selected") do |t|
+  # list test script files you want to run below
+  t.pattern = ["spec/ch02_soap_spec.rb","spec/ch03_rest_spec.rb"]
+end
+
+
+# List tests you want to exclude
+def excluded_spec_files
+  ["spec/ignore_spec.rb", "spec/ch05_email_spec.rb"]
+end
+
+# desc "Run all RSpec tests in the current folder"
+# RSpec::Core::RakeTask.new("test:all") do |t|
+#  t.pattern = ["spec/*_spec.rb"] 
+# end
+
+desc "Run all RSpec tests in the current folder"
+RSpec::Core::RakeTask.new("test:all") do |t|
+  all_specs = Dir.glob("spec/*_spec.rb")
+  specs_to_be_executed = all_specs - excluded_spec_files
+  t.pattern = FileList[specs_to_be_executed]
+end
