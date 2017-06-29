@@ -1,5 +1,7 @@
 load File.dirname(__FILE__) + '/../test_helper.rb'
 
+# NOTE, W3C's test services is down at the moment
+
 require 'net/http'
 require 'net/https'
 require 'erb'
