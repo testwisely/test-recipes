@@ -23,7 +23,8 @@ import File.join(File.dirname(__FILE__), "buildwise.rake")
 #
 def excluded_test_files
   [ 
-    "#{$test_dir}/spec/ignore_spec.rb"
+    "#{$test_dir}/spec/ignore_spec.rb",
+    "#{$test_dir}/spec/soap_spec.rb"
   ]
 end
 
