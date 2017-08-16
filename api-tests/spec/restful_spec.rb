@@ -18,7 +18,7 @@ describe "REST WebService" do
     get_rest_url = "http://www.thomas-bayer.com/sqlrest/CUSTOMER/4"    
     resp = HTTPClient.new.get(get_rest_url)
     # debug resp.body
-    expect(resp.body).to include("<CITY>")
+    expect(resp.body).to include("<CITY2>")
   end
     
 end
