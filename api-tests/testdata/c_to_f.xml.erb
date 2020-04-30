@@ -1,8 +1,8 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:x="http://www.w3schools.com/xml/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <x:CelsiusToFahrenheit>
-         <x:Celsius><%= @degree %></x:Celsius>
-      </x:CelsiusToFahrenheit>
-   </soapenv:Body>
-</soapenv:Envelope>
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <CelsiusToFahrenheit xmlns="https://www.w3schools.com/xml/">
+      <Celsius><%= @degree %></Celsius>
+    </CelsiusToFahrenheit>
+  </soap:Body>
+</soap:Envelope>

@@ -30,7 +30,7 @@ EOF
 
     # specific elmenent, 1-based
     second_book = doc.elements["//book[2]/title"].text
-    debug "2nd => " + second_book
+    puts "2nd => " + second_book
     
     # match first occurence
     first_programming_book = doc.elements["books/category[@name='Programming']/book/title"].text
@@ -41,8 +41,8 @@ EOF
     expect(book_elems_array.size).to eq(4)    
 
     REXML::XPath.each(doc, "//category[@name='Test Automation']/book") { |book_elem|
-      debug book_elem.elements["title"].text  # element text
-      debug book_elem.attributes["isbn"]      # attribute value
+      puts book_elem.elements["title"].text  # element text
+      puts book_elem.attributes["isbn"]      # attribute value
     }
   end
   
