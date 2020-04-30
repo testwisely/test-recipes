@@ -15,8 +15,8 @@ task :default => ["go"]
 
 # For BuildWise CI
 BUILDWISE_URL = ENV["BUILDWISE_MASTER"] || "http://buildwise.macmini"
-BUILDWISE_QUICK_PROJECT_ID = "api-testing-recipes" 
-BUILDWISE_FULL_PROJECT_ID = "api-testing-recipes-parallel" 
+BUILDWISE_QUICK_PROJECT_ID = "api-testing-recipes-ruby" 
+BUILDWISE_FULL_PROJECT_ID = "api-testing-recipes-ruby-parallel" 
 import File.join(File.dirname(__FILE__), "buildwise.rake")
 
 
@@ -81,7 +81,7 @@ task "ci:api_tests:quick" => ["ci:setup:rspec"] do
     :ui_test_dir => ["."],
     :excluded => excluded_spec_files
   )
-  buildwise_run_sequential_build_target(build_id, "ui_tests:quick")
+  buildwise_run_sequential_build_target(build_id, "api_tests:quick")
 end
 
 
