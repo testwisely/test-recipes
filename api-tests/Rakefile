@@ -17,8 +17,11 @@ task :default => ["go"]
 BUILDWISE_URL = ENV["BUILDWISE_MASTER"] || "http://buildwise.macmini"
 BUILDWISE_QUICK_PROJECT_ID = "api-testing-recipes-ruby" 
 BUILDWISE_FULL_PROJECT_ID = "api-testing-recipes-ruby-parallel" 
-import File.join(File.dirname(__FILE__), "buildwise.rake")
 
+FULL_BUILD_MAX_TIME = ENV["DISTRIBUTED_MAX_BUILD_TIME"].to_i || 60 * 60   # max build time, over this, time out
+FULL_BUILD_CHECK_INTERVAL =  ENV["DISTRIBUTED_BUILD_CHECK_INTERVAL"].to_i || 20  # check interval for build complete
+
+import File.join(File.dirname(__FILE__), "buildwise.rake")
 
 def specs_for_quick_build
   # list test files to be run in a quick build
@@ -87,9 +90,8 @@ end
 
 desc "Running tests distributedly"
 task "ci:api_tests:parallel" => ["ci:setup:rspec"] do
-  build_id = buildwise_start_build(:project_name => BUILDWISE_FULL_PROJECT_ID,
-                                   :working_dir => File.expand_path(File.dirname(__FILE__)),
-                                   :ui_test_dir => ["spec"],
+  build_id = buildwise_start_build(:working_dir => File.expand_path(File.dirname(__FILE__)),
+                                   :ui_test_dir => ["api-tests/spec"],
                                    :except => excluded_spec_files || [],
                                    :parallel => true
   )
