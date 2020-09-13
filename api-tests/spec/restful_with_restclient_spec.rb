@@ -3,27 +3,12 @@ load File.dirname(__FILE__) + '/../test_helper.rb'
 require 'net/http'
 require 'httpclient'
 require 'rexml/document'
+require 'rest-client'
 
 describe "REST WebService" do
   include TestHelper
-
-  it "REST - List all records" do
-    list_rest_url = "http://www.thomas-bayer.com/sqlrest/CUSTOMER"
-    resp = HTTPClient.new.get(list_rest_url)
-    xml_doc  = REXML::Document.new(resp.body)
-    expect(xml_doc.root.elements.size).to be > 10    
-  end
-
-  it "REST - Get a record" do
-    get_rest_url = "http://www.thomas-bayer.com/sqlrest/CUSTOMER/4"    
-    resp = HTTPClient.new.get(get_rest_url)
-    # debug resp.body
-    expect(resp.body).to include("<CITY>")
-  end
   
-   it "REST-Client" do
-    gem "rest-client"
-    require 'rest-client'
+   it "REST create using rest-client" do
     response = RestClient.get "http://www.thomas-bayer.com/sqlrest/CUSTOMER"
     puts response.code
     expect(response.code).to eq(200)
